@@ -290,4 +290,5 @@ def main(): # main
     app.run_polling(drop_pending_updates=True)
 
 if __name__ == "__main__":
+    k() # Khởi động web server mini
     main()
