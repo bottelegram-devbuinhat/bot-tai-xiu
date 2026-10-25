@@ -1,0 +1,20 @@
+==================================================
+        HƯỚNG DẪN SỬ DỤNG DÀNH CHO NGƯỜI CHƠI
+==================================================
+
+1. THAM GIA TRÒ CHƠI TÀI XỈU:
+- Khi phiên cược bắt đầu, bot sẽ gửi thông báo mở phiên (Ví dụ: #0001).
+- Cú pháp đặt cược trực tiếp trong khung chat:
+  + Cửa TÀI: Nhắn T[số tiền] (Ví dụ: T10000)
+  + Cửa XỈU: Nhắn X[số tiền] (Ví dụ: X50000)
+- Giới hạn cược mỗi ván: Tối thiểu 1,000 VNĐ, Tối đa 100,000 VNĐ.
+
+2. QUẢN LÝ VÍ VÀ TÀI KHOẢN:
+- Nút "💰 Thông tin tài khoản": Xem chi tiết tên, ID Telegram, số dư hiện tại, tổng số trận thắng và trạng thái cược của phiên hiện tại.
+- Nút "📜 Lịch sử cược": Xem lại lịch sử kết quả thắng/thua của 10 ván cược gần nhất.
+- Nút "🏆 Bảng xếp hạng": Xem Top 10 đại gia có số dư và số trận thắng lớn nhất toàn hệ thống.
+
+3. NHẬN THƯỞNG VÀ SỰ KIỆN:
+- Nút "🔗 Mời bạn (Ref)": Lấy link giới thiệu cá nhân để mời bạn bè tham gia.
+- Nút "🎟️ Nhập code": Nhập mã quà tặng (Giftcode) do Admin phát hành theo cú pháp /code BNDZ_XXXXXX hoặc nhập trực tiếp mã vào khung chat để nhận thưởng vào ví.
+==================================================

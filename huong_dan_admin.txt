@@ -1,0 +1,22 @@
+==================================================
+        HƯỚNG DẪN QUẢN TRỊ HỆ THỐNG (DÀNH CHO ADMIN)
+==================================================
+
+1. QUẢN LÝ SỐ DƯ NGƯỜI CHƠI (LỆNH CHAT):
+- Cộng tiền: /cong [id_telegram] [số_tiền]
+  (Ví dụ: /cong 8792000582 500000)
+- Trừ tiền: /tru [id_telegram] [số_tiền]
+  (Ví dụ: /tru 8792000582 100000)
+
+2. TẠO GIFTCODE VÀ QUẢN LÝ QUYỀN:
+- Tạo mã Giftcode: /code BNDZ_XXXXXX [số_tiền]
+  (Ví dụ: /code BNDZ_VIP9999 50000)
+- Thêm Admin mới: /addadmin [id_telegram]
+  (Ví dụ: /addadmin 123456789)
+
+3. QUẢN LÝ LỢI NHUẬN VÀ CẦU HỆ THỐNG (GIAO DIỆN NÚT BẤM & LỆNH):
+- Đặt mục tiêu lãi nhà cái: /setprofit [số_tiền_lãi]
+  (Hệ thống sẽ tự động tính toán để đạt mức lãi mong muốn mà vẫn đảm bảo tự nhiên, không lộ liễu).
+- Nút "🎲 Sửa Cầu Toàn Server": Cho phép Admin can thiệp ép toàn bộ kết quả ván đấu ra TÀI hoặc XỈU, hoặc bật chế độ ngẫu nhiên thông minh. (Lưu ý: Trạng thái sửa cầu sẽ tự động reset về ngẫu nhiên sau mỗi ván để tránh kẹt cầu).
+- Nút "👥 Quản lý người chơi": Xem danh sách tài khoản, khóa/mở khóa user hoặc chỉnh sửa cầu riêng cho từng người.
+==================================================
