@@ -13,7 +13,31 @@ from giftcode import cmd_crcode, check_code
 from admin import cmd_addadmin, cmd_kickadmin
 from utils import gui_huong_dan
 from history import xem_lich_su_user, xem_lich_su_admin
+from telegram import Update
+from telegram.ext import ContextTypes
+import wallet
 
+async def h(u: Update, c: ContextTypes.DEFAULT_TYPE):
+    x = c.args
+    if not x:
+        await u.message.reply_text("Vui lòng nhập số tiền cần nạp! Ví dụ: /naptien 50000")
+        return
+
+    i, j = wallet.f(x[0])
+    if not i:
+        await u.message.reply_text("Số tiền không hợp lệ! Tối thiểu là 10,000 VNĐ.")
+        return
+
+    k = u.effective_user.id
+    l = f"NAPTIEN_{k}"
+    m = wallet.d(j, l)
+
+    n = (
+        f"Quét mã QR để nạp {j:,} VNĐ\n"
+        f"Nội dung chuyển khoản bắt buộc: `{l}`\n\n"
+        "*(Hệ thống QR test giả lập giao dịch)*"
+    )
+    await u.message.reply_photo(photo=m, caption=n, parse_mode="Markdown")
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO) # log
 
 def g_u(i, n=""): # gu
