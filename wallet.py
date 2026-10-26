@@ -1,9 +1,54 @@
 from config import u, f_w, p, lich_su_nap_rut
 from datetime import datetime
+import re
 
 def ghi_ls_nap_rut(uid, txt): # glsnr
     with open(lich_su_nap_rut, 'a', encoding='utf-8') as f:
         f.write(f"USER:{uid} | [{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {txt}\n")
+
+# --- BỔ SUNG: HÀM VÀ LỆNH TẠO QR NẠP TIỀN ---
+def tao_link_qr_nap(stk, ngan_hang, so_tien, noi_dung): # tlqn
+    # Tạo đường dẫn VietQR tự động kèm theo số tiền và nội dung chuyển khoản định danh
+    return f"https://img.vietqr.io/image/{ngan_hang}-{stk}-compact2.png?amount={so_tien}&addInfo={noi_dung}"
+
+async def cmd_nap(u_obj, x_obj): # cnap
+    # Xử lý lệnh nạp tiền bằng mã QR (Ví dụ cú pháp: /nap 50000 hoặc /naptien 50000)
+    args = x_obj.args
+    if not args:
+        await u_obj.message.reply_text("⚠️ Vui lòng nhập số tiền cần nạp! Cú pháp: <code>/nap [số_tiền]</code>\n(Số tiền tối thiểu: 10.000đ)", parse_mode="HTML")
+        return
+    
+    try:
+        amt = int(args[0])
+    except ValueError:
+        await u_obj.message.reply_text("❌ Số tiền không hợp lệ! Vui lòng nhập một số nguyên.", parse_mode="HTML")
+        return
+
+    if amt < 10000:
+        await u_obj.message.reply_text("❌ Số tiền nạp tối thiểu là <b>10.000 VNĐ</b>!", parse_mode="HTML")
+        return
+
+    uid = str(u_obj.effective_user.id)
+    noi_dung_ck = f"NAPTIEN_{uid}"
+    
+    # Cấu hình thông tin tài khoản nhận tiền của Bot (Bạn có thể thay STK và Mã ngân hàng ở đây)
+    STK_NH = "123456789"
+    MA_NH = "MB" # Ví dụ: MB, VCB, TCB, BIDV,...
+
+    qr_url = tao_link_qr_nap(STK_NH, MA_NH, amt, noi_dung_ck)
+    
+    # Ghi log lịch sử yêu cầu nạp
+    ghi_ls_nap_rut(uid, f"TẠO QR NẠP: {amt:,.0f}đ | Nội dung: {noi_dung_ck}")
+
+    caption_text = (
+        f"<b>🏦 QUÉT MÃ QR ĐỂ NẠP TIỀN</b>\n\n"
+        f"💵 Số tiền: <b>{amt:,.0f} VNĐ</b>\n"
+        f"📝 Nội dung chuyển khoản bắt buộc: <code>{noi_dung_ck}</code>\n\n"
+        f"⚠️ <i>Lưu ý: Phải chuyển chính xác nội dung trên để hệ thống tự động cộng tiền!</i>"
+    )
+    
+    await u_obj.message.reply_photo(photo=qr_url, caption=caption_text, parse_mode="HTML")
+# --- KẾT THÚC PHẦN BỔ SUNG QR ---
 
 async def cmd_cong(u_obj, x_obj): # cc
     from config import c
