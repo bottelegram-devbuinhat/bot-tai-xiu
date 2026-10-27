@@ -209,8 +209,8 @@ async def h_m(u_obj: Update, x_obj: ContextTypes.DEFAULT_TYPE): # hm
             try:
                 bt = "TAI" if tu.startswith("T") else "XIU" # bt
                 amt = int(tu[1:]) # amt
-                if amt < 1000 or amt > 100000: # c
-                    await u_obj.message.reply_text("⚠️ Mức cược hợp lệ từ 1.000đ đến 100.000đ!", parse_mode="HTML") # m
+                if amt < 1000 or amt > 1000000: # c
+                    await u_obj.message.reply_text("⚠️ Mức cược hợp lệ từ 1.000đ đến 1.000.000đ!", parse_mode="HTML") # m
                     return # r
                 if w["balance"] < amt: # c
                     await u_obj.message.reply_text("❌ Số dư tài khoản không đủ để đặt cược!", parse_mode="HTML") # m
