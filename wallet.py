@@ -10,22 +10,20 @@ def ghi_ls_nap_rut(uid, txt): # glsnr
 
 def tao_va_tai_qr(stk, ngan_hang, so_tien, noi_dung, uid): # tvtqr
     # tvtqr: Tạo đường dẫn VietQR, tải ảnh về thư mục qrcodes/ và trả về đường dẫn file ảnh cục bộ
-    # Tạo thư mục chứa qr nếu chưa có
     thu_muc = "qrcodes"
     if not os.path.exists(thu_muc):
         os.makedirs(thu_muc)
     
-    # Tên file ảnh QR riêng biệt theo user_id để tái sử dụng
     duong_dan_file = os.path.join(thu_muc, f"qr_{uid}.png")
     
-    # Nếu file ảnh QR của user này đã tồn tại trước đó rồi thì trả về luôn ảnh cũ
+    # Nếu user đã từng có file QR lưu sẵn trên máy, trả về luôn đường dẫn file cũ
     if os.path.exists(duong_dan_file):
         return duong_dan_file
 
-    # Nếu chưa có thì tạo link và tải về máy
+    # Nếu chưa có, tiến hành gọi API VietQR và tải về máy
     url_qr = f"https://img.vietqr.io/image/{ngan_hang}-{stk}-compact2.png?amount={so_tien}&addInfo={noi_dung}"
     try:
-        res = requests.get(url_qr)
+        res = requests.get(url_qr, timeout=10)
         if res.status_code == 200:
             with open(duong_dan_file, 'wb') as f:
                 f.write(res.content)
@@ -33,7 +31,7 @@ def tao_va_tai_qr(stk, ngan_hang, so_tien, noi_dung, uid): # tvtqr
     except Exception as e:
         print(f"Lỗi tải QR: {e}")
     
-    return url_qr # Trả về link gốc nếu tải thất bại
+    return url_qr # Fallback trả về link gốc nếu tải thất bại
 
 async def cmd_nap(u_obj, x_obj): # cnap
     # cnap: Xử lý lệnh nạp tiền, kiểm tra QR cũ hoặc tạo mới tải về máy rồi gửi cho user
@@ -55,8 +53,8 @@ async def cmd_nap(u_obj, x_obj): # cnap
     uid = str(u_obj.effective_user.id)
     noi_dung_ck = f"NAPTIEN_{uid}"
     
-    STK_NH = "123456789" # Thay số tài khoản của bạn vào đây
-    MA_NH = "MB"         # Thay mã ngân hàng của bạn vào đây (MB, VCB,...)
+    STK_NH = "123456789" # Thay số tài khoản ngân hàng của bạn vào đây
+    MA_NH = "MB"         # Thay mã ngân hàng của bạn vào đây (MB, VCB, TCB,...)
 
     # Gọi hàm kiểm tra QR cũ hoặc tải mới về máy bot
     qr_path_or_url = tao_va_tai_qr(STK_NH, MA_NH, amt, noi_dung_ck, uid)
@@ -71,12 +69,16 @@ async def cmd_nap(u_obj, x_obj): # cnap
     )
     
     try:
-        # Gửi ảnh QR (có thể là file tải sẵn trên máy bot hoặc từ URL)
-        with open(qr_path_or_url, 'rb') as photo_file:
-            await u_obj.message.reply_photo(photo=photo_file, caption=caption_text, parse_mode="HTML")
-    except Exception:
-        # Fallback nếu gửi bằng file lỗi thì gửi bằng đường dẫn URL trực tiếp
-        await u_obj.message.reply_photo(photo=qr_path_or_url, caption=caption_text, parse_mode="HTML")
+        # Kiểm tra nếu là file ảnh cục bộ trên máy thì mở file dưới dạng binary để gửi
+        if os.path.exists(qr_path_or_url):
+            with open(qr_path_or_url, 'rb') as photo_file:
+                await u_obj.message.reply_photo(photo=photo_file, caption=caption_text, parse_mode="HTML")
+        else:
+            # Nếu là đường dẫn URL trực tiếp
+            await u_obj.message.reply_photo(photo=qr_path_or_url, caption=caption_text, parse_mode="HTML")
+    except Exception as e:
+        # Xử lý dự phòng nếu gửi ảnh gặp lỗi thì gửi dạng text kèm link
+        await u_obj.message.reply_text(f"{caption_text}\n\n🔗 Link QR của bạn: {qr_path_or_url}", parse_mode="HTML")
 
 async def cmd_cong(u_obj, x_obj): # cc
     from config import c
