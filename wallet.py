@@ -16,11 +16,10 @@ def tao_va_tai_qr(stk, ngan_hang, so_tien, noi_dung, uid): # tvtqr
     
     duong_dan_file = os.path.join(thu_muc, f"qr_{uid}.png")
     
-    # Nếu user đã từng có file QR lưu sẵn trên máy, trả về luôn đường dẫn file cũ
+    # Nếu file ảnh QR của user đã tồn tại, trả về luôn file cũ
     if os.path.exists(duong_dan_file):
         return duong_dan_file
 
-    # Nếu chưa có, tiến hành gọi API VietQR và tải về máy
     url_qr = f"https://img.vietqr.io/image/{ngan_hang}-{stk}-compact2.png?amount={so_tien}&addInfo={noi_dung}"
     try:
         res = requests.get(url_qr, timeout=10)
@@ -31,10 +30,10 @@ def tao_va_tai_qr(stk, ngan_hang, so_tien, noi_dung, uid): # tvtqr
     except Exception as e:
         print(f"Lỗi tải QR: {e}")
     
-    return url_qr # Fallback trả về link gốc nếu tải thất bại
+    return url_qr 
 
 async def cmd_nap(u_obj, x_obj): # cnap
-    # cnap: Xử lý lệnh nạp tiền, kiểm tra QR cũ hoặc tạo mới tải về máy rồi gửi cho user
+    # cnap: Xử lý lệnh nạp tiền, hiển thị rõ STK MB và link/ảnh QR cho user
     args = x_obj.args
     if not args:
         await u_obj.message.reply_text("⚠️ Vui lòng nhập số tiền cần nạp! Cú pháp: <code>/nap [số_tiền]</code>\n(Số tiền tối thiểu: 10.000đ)", parse_mode="HTML")
@@ -53,32 +52,37 @@ async def cmd_nap(u_obj, x_obj): # cnap
     uid = str(u_obj.effective_user.id)
     noi_dung_ck = f"NAPTIEN_{uid}"
     
-    STK_NH = "123456789" # Thay số tài khoản ngân hàng của bạn vào đây
-    MA_NH = "MB"         # Thay mã ngân hàng của bạn vào đây (MB, VCB, TCB,...)
+    # Cấu hình chính xác STK MB của bạn
+    STK_NH = "05817666778899"
+    MA_NH = "MB"
 
-    # Gọi hàm kiểm tra QR cũ hoặc tải mới về máy bot
     qr_path_or_url = tao_va_tai_qr(STK_NH, MA_NH, amt, noi_dung_ck, uid)
     
     ghi_ls_nap_rut(uid, f"YÊU CẦU NẠP: {amt:,.0f}đ | Nội dung: {noi_dung_ck}")
 
-    caption_text = (
-        f"<b>🏦 QUÉT MÃ QR ĐỂ NẠP TIỀN</b>\n\n"
+    # Thông báo chi tiết bao gồm cả số tài khoản, tên ngân hàng và nội dung chuyển khoản chuẩn
+    nap_text = (
+        f"<b>🏦 THÔNG TIN CHUYỂN KHOẢN NẠP TIỀN</b>\n"
+        f"━━━━━━━━━━━━━━━━━━━\n"
+        f"🏛️ Ngân hàng: <b>MB Bank (Quân Đội)</b>\n"
+        f"💳 Số tài khoản: <code>{STK_NH}</code>\n"
         f"💵 Số tiền: <b>{amt:,.0f} VNĐ</b>\n"
-        f"📝 Nội dung chuyển khoản bắt buộc: <code>{noi_dung_ck}</code>\n\n"
-        f"⚠️ <i>Lưu ý: Phải chuyển chính xác nội dung trên để hệ thống tự động cộng tiền!</i>"
+        f"📝 Nội dung CK: <code>{noi_dung_ck}</code>\n"
+        f"━━━━━━━━━━━━━━━━━━━\n"
+        f"🔗 <a href='{qr_path_or_url}'>👉 Bấm vào đây để xem mã QR chuyển khoản</a>\n\n"
+        f"⚠️ <i>Lưu ý: Chuyển chính xác số tiền và nội dung để hệ thống tự động cộng tiền!</i>"
     )
     
     try:
-        # Kiểm tra nếu là file ảnh cục bộ trên máy thì mở file dưới dạng binary để gửi
+        # Cố gắng gửi ảnh kèm text trước
         if os.path.exists(qr_path_or_url):
             with open(qr_path_or_url, 'rb') as photo_file:
-                await u_obj.message.reply_photo(photo=photo_file, caption=caption_text, parse_mode="HTML")
+                await u_obj.message.reply_photo(photo=photo_file, caption=nap_text, parse_mode="HTML")
         else:
-            # Nếu là đường dẫn URL trực tiếp
-            await u_obj.message.reply_photo(photo=qr_path_or_url, caption=caption_text, parse_mode="HTML")
-    except Exception as e:
-        # Xử lý dự phòng nếu gửi ảnh gặp lỗi thì gửi dạng text kèm link
-        await u_obj.message.reply_text(f"{caption_text}\n\n🔗 Link QR của bạn: {qr_path_or_url}", parse_mode="HTML")
+            await u_obj.message.reply_photo(photo=qr_path_or_url, caption=nap_text, parse_mode="HTML")
+    except Exception:
+        # Nếu gửi ảnh bị lỗi mạng/Telegram từ chối, bot sẽ gửi ngay dạng tin nhắn văn bản kèm STK và Link QR không bao giờ lỗi
+        await u_obj.message.reply_text(nap_text, parse_mode="HTML", disable_web_page_preview=False)
 
 async def cmd_cong(u_obj, x_obj): # cc
     from config import c
@@ -139,6 +143,7 @@ async def cmd_duyet(u_obj, x_obj): # cduyet
         await u_obj.message.reply_text(f"✅ Đã duyệt lệnh rút cho user <code>{ti}</code> thành công!", parse_mode="HTML")
 
 async def cmd_tuchoi(u_obj, x_obj): # ctuchoi
+    from config:: c if needed, but handled inside
     from config import c
     if u_obj.effective_user.id not in c["admin_ids"]: return
     args = x_obj.args
