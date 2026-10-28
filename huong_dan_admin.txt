@@ -2,21 +2,23 @@
         HƯỚNG DẪN QUẢN TRỊ HỆ THỐNG (DÀNH CHO ADMIN)
 ==================================================
 
-1. QUẢN LÝ SỐ DƯ NGƯỜI CHƠI (LỆNH CHAT):
-- Cộng tiền: /cong [id_telegram] [số_tiền]
-  (Ví dụ: /cong 8792000582 500000)
-- Trừ tiền: /tru [id_telegram] [số_tiền]
-  (Ví dụ: /tru 8792000582 100000)
+1. QUẢN LÝ SỐ DƯ VÀ GIAO DỊCH (LỆNH CHAT):
+- Cộng tiền user: `/cong [id_telegram] [số_tiền]` (Ví dụ: `/cong 8792000582 500000`)
+- Trừ tiền user: `/tru [id_telegram] [số_tiền]` (Ví dụ: `/tru 8792000582 100000`)
+- Duyệt lệnh rút: `/duyet [id_telegram] [số_tiền]`
+- Từ chối lệnh rút (Tự động hoàn tiền): `/tuchoi [id_telegram] [số_tiền]`
 
-2. TẠO GIFTCODE VÀ QUẢN LÝ QUYỀN:
-- Tạo mã Giftcode: /code BNDZ_XXXXXX [số_tiền]
-  (Ví dụ: /code BNDZ_VIP9999 50000)
-- Thêm Admin mới: /addadmin [id_telegram]
-  (Ví dụ: /addadmin 123456789)
+2. TẠO GIFTCODE VÀ QUẢN LÝ QUYỀN ADMIN:
+- Tạo mã Giftcode: `/crcode [mã_BNDZ] [số_người] [mệnh_giá]` (Ví dụ: `/crcode BNDZ_VIP 10 50000`)
+- Thêm Admin mới: `/addadmin [id_telegram]` (Ví dụ: `/addadmin 123456789`)
+- Xóa Admin (Chỉ ID tối cao): `/kickadmin [id_telegram]`
 
-3. QUẢN LÝ LỢI NHUẬN VÀ CẦU HỆ THỐNG (GIAO DIỆN NÚT BẤM & LỆNH):
-- Đặt mục tiêu lãi nhà cái: /setprofit [số_tiền_lãi]
-  (Hệ thống sẽ tự động tính toán để đạt mức lãi mong muốn mà vẫn đảm bảo tự nhiên, không lộ liễu).
-- Nút "🎲 Sửa Cầu Toàn Server": Cho phép Admin can thiệp ép toàn bộ kết quả ván đấu ra TÀI hoặc XỈU, hoặc bật chế độ ngẫu nhiên thông minh. (Lưu ý: Trạng thái sửa cầu sẽ tự động reset về ngẫu nhiên sau mỗi ván để tránh kẹt cầu).
-- Nút "👥 Quản lý người chơi": Xem danh sách tài khoản, khóa/mở khóa user hoặc chỉnh sửa cầu riêng cho từng người.
+3. QUẢN LÝ GIAO DIỆN NÚT BẤM ADMIN:
+- Nút "👥 Quản lý người chơi": Xem danh sách toàn bộ user, kiểm tra số dư và thông tin chi tiết từng tài khoản.
+- Nút "👑 Quản lý Admin": Xem danh sách ID các Admin hiện tại trong hệ thống.
+- Nút "⚖️ Chỉnh tỉ lệ cược": Thay đổi linh hoạt tỉ lệ trả thưởng giữa Tài và Xỉu (1.95 hoặc 1.98).
+- Nút "🎲 Sửa Cầu Toàn Server": Ép kết quả toàn server ra TÀI, XỈU hoặc trả về chế độ ngẫu nhiên tự động.
+- Nút "📜 Lịch sử Server & Code": Xem lịch sử kết quả 10 phiên gần nhất, lịch sử nạp/rút và trạng thái sử dụng của tất cả các Giftcode.
+- Nút "📊 Thống kê hệ thống": Xem tổng số lượng người chơi và tổng số dư hiện có trong toàn bộ bot.
+- Nút "🛑 Tắt bot": Dừng hẳn tiến trình hoạt động của bot trên server (`os._exit(0)`).
 ==================================================
