@@ -1,20 +1,27 @@
-==================================================
-        HƯỚNG DẪN SỬ DỤNG DÀNH CHO NGƯỜI CHƠI
-==================================================
+📖 <b>HƯỚNG DẪN SỬ DỤNG DÀNH CHO NGƯỜI CHƠI</b>
 
-1. THAM GIA TRÒ CHƠI TÀI XỈU:
-- Khi phiên cược bắt đầu, bot sẽ gửi thông báo mở phiên (Ví dụ: #0001).
-- Cú pháp đặt cược trực tiếp trong khung chat:
-  + Cửa TÀI: Nhắn T[số tiền] (Ví dụ: T10000)
-  + Cửa XỈU: Nhắn X[số tiền] (Ví dụ: X50000)
-- Giới hạn cược mỗi ván: Tối thiểu 1,000 VNĐ, Tối đa 100,000 VNĐ.
+<b>1. THAM GIA CƯỢC TÀI XỈU (Cú pháp chat):</b>
+• Cửa TÀI: Nhắn <code>T[số tiền]</code> (Ví dụ: T10000)
+• Cửa XỈU: Nhắn <code>X[số tiền]</code> (Ví dụ: X50000)
+<i>(Giới hạn: Từ 1.000đ đến 100.000đ. Mỗi phiên chỉ cược duy nhất 1 cửa)</i>
 
-2. QUẢN LÝ VÍ VÀ TÀI KHOẢN:
-- Nút "💰 Thông tin tài khoản": Xem chi tiết tên, ID Telegram, số dư hiện tại, tổng số trận thắng và trạng thái cược của phiên hiện tại.
-- Nút "📜 Lịch sử cược": Xem lại lịch sử kết quả thắng/thua của 10 ván cược gần nhất.
-- Nút "🏆 Bảng xếp hạng": Xem Top 10 đại gia có số dư và số trận thắng lớn nhất toàn hệ thống.
+<b>2. NẠP TIỀN & RÚT TIỀN (Cú pháp chat):</b>
+• <b>Nạp tiền:</b> <code>/nap [số_tiền]</code> (Tối thiểu 10.000đ)
+👉 <i>Hệ thống sẽ tự động tạo mã QR định danh cục bộ kèm Số tài khoản, bạn chỉ cần quét mã và chuyển khoản là được cộng tiền tự động.</i>
 
-3. NHẬN THƯỞNG VÀ SỰ KIỆN:
-- Nút "🔗 Mời bạn (Ref)": Lấy link giới thiệu cá nhân để mời bạn bè tham gia.
-- Nút "🎟️ Nhập code": Nhập mã quà tặng (Giftcode) do Admin phát hành theo cú pháp /code BNDZ_XXXXXX hoặc nhập trực tiếp mã vào khung chat để nhận thưởng vào ví.
-==================================================
+• <b>Rút tiền:</b> <code>/rut [tên_ngân_hàng] [số_tài_khoản] [tên_chủ_tk] [số_tiền]</code>
+👉 <i>Ví dụ: <code>/rut MB Bank 860671050278271 BUI NGUYEN XUAN NHAT 150000</code></i>
+⚠️ <i>Điều kiện: Số tiền yêu cầu rút bắt buộc phải <b>lớn hơn 100.000 VNĐ</b> và tối đa là 1.000.000 VNĐ cho mỗi lần thực hiện.</i>
+
+<b>3. CHỨC NĂNG CÁC NÚT BẤM TIỆN ÍCH:</b>
+• 💰 <b>Thông tin tài khoản:</b> Xem ID, số dư, lượt giới thiệu (Ref), tổng trận thắng và trạng thái cược phiên hiện tại.
+• 💳 <b>Nạp tiền:</b> Lấy thông tin tài khoản admin và hướng dẫn tạo QR nạp tiền.
+• 💸 <b>Rút tiền:</b> Xem lại hướng dẫn tạo lệnh rút tiền về tài khoản ngân hàng của bạn.
+• 📜 <b>Lịch sử cược cá nhân:</b> Xem lại kết quả 10 ván cược gần nhất và lịch sử giao dịch.
+• 🏆 <b>Bảng xếp hạng:</b> Vinh danh Top 10 người chơi có số dư và trận thắng cao nhất hệ thống.
+• 🔕 <b>Tắt/Bật thông báo:</b> Bật hoặc tắt tính năng nhận tin nhắn từ bot mỗi khi có phiên cược mới bắt đầu.
+• 🔗 <b>Mời bạn:</b> Lấy link giới thiệu cá nhân để mời bạn bè tham gia và nhận hoa hồng.
+• 🎟️ <b>Nhập code:</b> Nhắn trực tiếp mã quà tặng dạng <code>BNDZ_XXXXXXXX</code> vào khung chat để nhận tiền thưởng vào ví.
+
+--------------------------------------------------
+⚠️ <b>LƯU Ý QUAN TRỌNG:</b> Admin là người nắm quyền hành cao nhất tại hệ thống. Mọi quyết định duyệt/từ chối giao dịch, giải quyết khiếu nại hoặc xử lý tài khoản từ phía Admin sẽ là quyết định cuối cùng!
